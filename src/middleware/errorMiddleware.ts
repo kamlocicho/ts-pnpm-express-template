@@ -12,5 +12,6 @@ export const errorHandler = (err: Error, req: Request, res: Response, next: Next
     }
 
     // Handle uncaught errors with a generic response
+    console.log(err);
     res.status(500).json({ error: "Internal Server Error" });
 };

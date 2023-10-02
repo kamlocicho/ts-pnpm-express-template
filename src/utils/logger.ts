@@ -1,5 +1,5 @@
 // src/utils/logger.ts
-import winston, { createLogger, format, transports } from "winston";
+import { createLogger, format, transports } from "winston";
 
 const logger = createLogger({
     level: "info",
@@ -10,11 +10,7 @@ const logger = createLogger({
             return `${level}: ${message}`;
         })
     ),
-    transports: [
-        new transports.Console(),
-        new transports.File({ filename: "error.log", level: "error" }),
-        new transports.File({ filename: "combined.log" }),
-    ],
+    transports: [new transports.Console()],
 });
 
 export default logger;
