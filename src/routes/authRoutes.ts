@@ -26,7 +26,7 @@ router.post("/register", async (req, res) => {
             expiresIn: "1h", // Token expiration time (adjust as needed)
         });
 
-        res.status(201).json({ token });
+        return res.status(201).json({ token });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Registration failed" });
@@ -56,7 +56,7 @@ router.post("/login", async (req, res) => {
             expiresIn: "1h", // Token expiration time (adjust as needed)
         });
 
-        res.json({ token });
+        return res.status(200).json({ token });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Login failed" });

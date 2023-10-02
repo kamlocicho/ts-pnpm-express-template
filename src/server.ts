@@ -1,8 +1,10 @@
 // src/server.ts
 import express from "express";
-import mongoose from "./db";
-import userRoutes from "./routes/userRoutes";
+import connectDb from "./db";
+import authRoutes from "./routes/authRoutes";
+import protectedRoutes from "./routes/protectedRoutes";
 import dotenv from "dotenv";
+import { authenticateUser } from "./middleware/authMiddleware";
 
 // Load environment variables from .env file
 dotenv.config();
@@ -12,7 +14,8 @@ const port = 3000;
 
 app.use(express.json());
 
-app.use("/api/users", userRoutes);
+app.use("/auth", authRoutes);
+app.use("/protected", authenticateUser, protectedRoutes);
 
 app.get("/", (req, res) => {
     res.send("Hello, Express!");
@@ -20,4 +23,5 @@ app.get("/", (req, res) => {
 
 app.listen(port, () => {
     console.log(`Server is listening on port ${port}`);
+    connectDb();
 });

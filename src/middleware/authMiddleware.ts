@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 
 export const authenticateUser = (req: Request, res: Response, next: NextFunction) => {
     const token = req.header("Authorization")?.split(" ")[1];
+    console.log("authenticating");
 
     const jwtSecret = process.env.JWT_SECRET;
     if (!jwtSecret) throw new Error("JWT_SECRET has to be stored in .env variables.");
