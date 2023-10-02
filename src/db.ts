@@ -1,5 +1,6 @@
 // src/db.ts
 import mongoose from "mongoose";
+import logger from "./utils/logger";
 
 const connectDb = () => {
     const dbUri = process.env.MONGODB_URI; // Change to your MongoDB URI
@@ -13,7 +14,7 @@ const connectDb = () => {
 
     db.on("error", console.error.bind(console, "MongoDB connection error:"));
     db.once("open", () => {
-        console.log("Connected to MongoDB");
+        logger.info("Connected to MongoDB");
     });
 };
 

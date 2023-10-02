@@ -3,18 +3,19 @@ import { Router } from "express";
 import User, { IUser } from "../models/user";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import CustomError from "../errors/customError";
 
 const router = Router();
 
 // User registration route
-router.post("/register", async (req, res) => {
+router.post("/register", async (req, res, next) => {
     try {
         const { username, email, password } = req.body;
 
         // Check if the user already exists
         const existingUser = await User.findOne({ email });
         if (existingUser) {
-            return res.status(400).json({ error: "User already exists" });
+            throw new CustomError("User already exists", 400);
         }
 
         // Create a new user
@@ -29,11 +30,11 @@ router.post("/register", async (req, res) => {
         return res.status(201).json({ token });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Registration failed" });
+        next(error);
     }
 });
 
-router.post("/login", async (req, res) => {
+router.post("/login", async (req, res, next) => {
     try {
         const { email, password } = req.body;
 
@@ -41,7 +42,7 @@ router.post("/login", async (req, res) => {
         const user = await User.findOne({ email });
 
         if (!user) {
-            return res.status(401).json({ error: "Authentication failed" });
+            throw new CustomError("Authentication failed", 401);
         }
 
         // Verify the password
@@ -59,7 +60,7 @@ router.post("/login", async (req, res) => {
         return res.status(200).json({ token });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Login failed" });
+        next(error);
     }
 });
 

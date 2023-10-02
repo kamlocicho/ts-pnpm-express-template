@@ -5,6 +5,8 @@ import authRoutes from "./routes/authRoutes";
 import protectedRoutes from "./routes/protectedRoutes";
 import dotenv from "dotenv";
 import { authenticateUser } from "./middleware/authMiddleware";
+import { errorHandler } from "./middleware/errorMiddleware";
+import logger from "./utils/logger";
 
 // Load environment variables from .env file
 dotenv.config();
@@ -21,7 +23,9 @@ app.get("/", (req, res) => {
     res.send("Hello, Express!");
 });
 
+app.use(errorHandler);
+
 app.listen(port, () => {
-    console.log(`Server is listening on port ${port}`);
+    logger.info(`Server is listening on port ${port}`);
     connectDb();
 });
